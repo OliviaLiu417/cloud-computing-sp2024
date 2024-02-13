@@ -1,0 +1,8 @@
+---
+- name: "Play 2 - Run ping on ec2 VMs"
+  hosts: MyAWSVMs
+  remote_user: ubuntu
+
+  tasks:
+    - name: "Ping"
+      shell: ping -c 1 -w 2 8.8.8.8
