@@ -3,8 +3,8 @@
   hosts: localhost
   gather_facts: False
   environment:
-    AWS_ACCESS_KEY_ID: AKIA2Y5L55N5I2OA3BXX
-    AWS_SECRET_ACCESS_KEY: yLaAQieof9jaaFYXjDDS01AGgACxG335IZjrrhte
+    AWS_ACCESS_KEY_ID: <your_access_key>
+    AWS_SECRET_ACCESS_KEY: <your_secret_key>
     AWS_REGION: 'us-west-2'
 
   vars:
