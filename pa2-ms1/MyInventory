@@ -13,7 +13,7 @@
 
 # AWS VMs. Note the path of private key is now in the Vagrant-created VM
 [MyAWSVMs]
-35.89.140.181 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
-52.37.61.138 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+52.13.11.118 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+54.202.45.181 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
 
 
