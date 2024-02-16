@@ -1,0 +1,13 @@
+[MyLocalVMs]
+127.0.0.1  ansible_connection=local
+
+# AWS VMs. Note the path of private key is now in the Vagrant-created VM
+[MyAWSVMs]
+34.209.153.98 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem broker_id=0 private_ip=172.31.17.119 public_ip=34.209.153.98 zookeeper=localhost:2181,172.31.17.119:2181 myid=0
+54.200.164.23 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem broker_id=1 private_ip=172.31.30.188 public_ip=54.200.164.23 zookeeper=172.31.17.119:2181 myid=1
+
+[Zookeeper]
+34.209.153.98 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+
+[VM3]
+54.200.164.23 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem

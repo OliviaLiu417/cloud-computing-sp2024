@@ -8,12 +8,12 @@
   #   AWS_REGION: 'us-west-2'
 
   vars:
-      instance_type: t2.nano
-      ami: ami-008fe2fc65df48dac  # Ubuntu 20.04 LTS
-      keypair: cloud # pem file name
-      subnetid: subnet-Oec8b1da6f937f163
-      vpc_id: vpc-07dbc78a6df7fa34a
-  
+    instance_type: t2.nano
+    ami: ami-008fe2fc65df48dac # Ubuntu 20.04 LTS
+    keypair: cloud # pem file name
+    subnetid: subnet-Oec8b1da6f937f163
+    vpc_id: vpc-07dbc78a6df7fa34a
+
   tasks:
     - name: Create cloud vm2 ec2 instance
       ec2_instance:

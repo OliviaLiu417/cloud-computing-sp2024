@@ -1,0 +1,60 @@
+- name: Update APT package manager repositories cache
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install Java
+  become: yes
+  apt:
+    name: openjdk-11-jdk
+    state: present
+
+- name: Install Python3 and pip
+  become: yes
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Download Kafka
+  become: yes
+  get_url:
+    url: "https://dlcdn.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz"
+    dest: "/tmp/kafka.tgz"
+
+- name: Extract Kafka
+  unarchive:
+    src: "/tmp/kafka.tgz"
+    dest: "/opt"
+    remote_src: yes
+  become: yes
+
+- name: Configure Kafka server properties
+  become: yes
+  template:
+    src: server.properties.j2
+    dest: "{{installation_dir}}/config/server.properties"
+  vars:
+    broker_id: "{{ hostvars[inventory_hostname]['broker_id'] }}"
+    zookeeper_connect: "{{ hostvars[inventory_hostname]['zookeeper'] }}"
+    private_ip: "{{ hostvars[inventory_hostname]['private_ip'] }}"
+    public_ip: "{{ hostvars[inventory_hostname]['public_ip'] }}"
+
+- name: Update the Java Heap Size for Zookeeper
+  become: yes
+  replace:
+    path: "{{installation_dir}}/bin/zookeeper-server-start.sh"
+    regexp: 'export KAFKA_HEAP_OPTS=(".+")'
+    replace: 'export KAFKA_HEAP_OPTS="{{zookeeper_heap_size}}"'
+    backup: yes
+  when: "'Zookeeper' in group_names"
+
+- name: "Update the Java Heap Size for Kafka"
+  become: yes
+  replace:
+    path: "{{installation_dir}}/bin/kafka-server-start.sh"
+    regexp: 'export KAFKA_HEAP_OPTS=(".+")'
+    replace: 'export KAFKA_HEAP_OPTS="{{kafka_heap_size}}"'
+    backup: yes
+  when: "'MyAWSVMs' in group_names"

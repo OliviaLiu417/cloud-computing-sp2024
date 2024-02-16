@@ -1,0 +1,11 @@
+- name: Copy consumers to vm2
+  copy:
+    src: ./consumer_vm2.py
+    dest: "{{ consumer_dir }}"
+  when: "'Zookeeper' in group_names"
+
+- name: Copy consumers to vm3
+  copy:
+    src: ./consumer_vm3.py
+    dest: "{{ consumer_dir }}"
+  when: "'VM3' in group_names"
