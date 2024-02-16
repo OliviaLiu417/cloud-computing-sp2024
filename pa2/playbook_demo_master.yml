@@ -1,7 +1,7 @@
----
-#####################################################
-### Play 1: Install Kafka, dependencies, and set up the services
-#####################################################
+# ---
+# #####################################################
+# ### Play 1: Install Kafka, dependencies, and set up the services
+# #####################################################
 # - name: "Play 1: Install Kafka, dependencies, and set up the services"
 #   hosts: MyAWSVMs,Zookeeper
 #   remote_user: ubuntu
@@ -13,21 +13,22 @@
 #   tasks:
 #     - include_tasks: tasks/playbook_install_setup_kafka.yml
 
-# #####################################################
-# ### Play 2:  Start Kafka services
-# #####################################################
-# - name: "Play 3: Start Kafka services"
-#   hosts: MyAWSVMs,Zookeeper
-#   remote_user: ubuntu
-#   gather_facts: no
-#   vars:
-#     installation_dir: /opt/kafka_2.13-3.6.1
-#   tasks:
-#     - include_tasks: tasks/playbook_start_kafka.yml
+# # #####################################################
+# # ### Play 2:  Start Kafka services
+# # #####################################################
+- name: "Play 3: Start Kafka services"
+  hosts: MyAWSVMs,Zookeeper,VM2
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  vars:
+    installation_dir: /opt/kafka_2.13-3.6.1
+  tasks:
+    - include_tasks: tasks/playbook_start_kafka.yml
 
-#####################################################
-# ### Play 3: Copying consumers to vm
 # #####################################################
+# # ### Play 3: Copying consumers to vm
+# # #####################################################
 # - name: "Play 4: Copying consumers to vm"
 #   hosts: Zookeeper,VM3
 #   vars:
@@ -37,9 +38,9 @@
 #   tasks:
 #     - include_tasks: tasks/playbook_copy_consumers.yml
 
-#####################################################
-### Play 4: Running all consumers
-#####################################################
+# #####################################################
+# ### Play 4: Running all consumers
+# #####################################################
 # - name: "Play 5: Run the consumer"
 #   hosts: Zookeeper,VM3
 #   remote_user: ubuntu

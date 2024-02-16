@@ -1,6 +1,6 @@
 ---
 - name: "Play 2 - Run ping on ec2 VMs"
-  hosts: MyAWSVMs
+  hosts: VM2
   remote_user: ubuntu
 
   tasks:
