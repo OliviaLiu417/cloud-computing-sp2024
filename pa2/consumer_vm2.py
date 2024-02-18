@@ -21,7 +21,7 @@ import json
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-consumer = KafkaConsumer(bootstrap_servers="172.31.17.119:9092")
+consumer = KafkaConsumer(bootstrap_servers="172.31.29.51:9092")
 
 # subscribe to topic
 consumer.subscribe(topics=["weather_data_nashville", "weather_data_atlanta", "weather_data_chicago"])

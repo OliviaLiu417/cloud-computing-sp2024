@@ -10,7 +10,7 @@ API_KEY = "1efe32238e1a430cbbcc25f4c45b9b9e"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 # Kafka configuration
-BOOTSTRAP_SERVERS = "52.37.61.138:9092" # vm1
+BOOTSTRAP_SERVERS = "35.85.145.90:9092" # vm1
 
 # Initialize Kafka producer
 producer = KafkaProducer(

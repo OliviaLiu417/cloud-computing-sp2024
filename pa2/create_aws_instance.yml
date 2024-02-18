@@ -8,7 +8,7 @@
   #   AWS_REGION: 'us-west-2'
 
   vars:
-    instance_type: t2.nano
+    instance_type: t2.micro
     ami: ami-008fe2fc65df48dac # Ubuntu 20.04 LTS
     keypair: cloud # pem file name
     subnetid: subnet-Oec8b1da6f937f163

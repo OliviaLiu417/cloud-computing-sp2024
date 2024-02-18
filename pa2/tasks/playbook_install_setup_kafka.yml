@@ -17,6 +17,13 @@
       - python3-pip
     state: present
 
+- name: Ensure kafka-python is installed
+  pip:
+    name: kafka-python
+    state: present
+    executable: pip3
+  tags: install
+
 - name: Download Kafka
   become: yes
   get_url:
