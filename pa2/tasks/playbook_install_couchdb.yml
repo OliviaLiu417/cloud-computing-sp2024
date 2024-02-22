@@ -1,0 +1,61 @@
+
+- name: couchdb install package step 1
+  become: true
+  shell: apt update && apt install -y curl apt-transport-https gnupg
+
+- name: couchdb install package step 2
+  become: true
+  shell: curl https://couchdb.apache.org/repo/keys.asc | gpg --dearmor | sudo tee /usr/share/keyrings/couchdb-archive-keyring.gpg >/dev/null 2>&1
+
+- name: couchdb install package step 3
+  become: true
+  shell: source /etc/os-release
+  args:
+    executable: /bin/bash
+
+- name: couchdb install package step 4
+  become: true
+  shell: echo "deb [signed-by=/usr/share/keyrings/couchdb-archive-keyring.gpg] https://apache.jfrog.io/artifactory/couchdb-deb/ jammy main" \ | sudo tee /etc/apt/sources.list.d/couchdb.list >/dev/null
+
+- name: update apt
+  become: true
+  shell: apt update
+
+- name: debconf select cluster mode for couchdb
+  debconf:
+    name: couchdb
+    question: couchdb/mode
+    value: standalone
+    vtype: select
+  
+- name: debconf enter bindaddress of couchdb
+  debconf:
+    name: couchdb
+    question: couchdb/bindaddress
+    value: '0.0.0.0'
+    vtype: string
+
+- name: debconf adminpass of couchdb
+  debconf:
+    name: couchdb
+    question: couchdb/adminpass
+    value: "{{ couchdb_password }}"
+    vtype: password
+
+- name: debconf enter cookie of couchdb
+  debconf:
+    name: couchdb
+    question: couchdb/cookie
+    value: 1234
+    vtype: string
+
+- name: enter adminpass again 
+  debconf:
+    name: couchdb
+    question: couchdb/adminpass_again
+    value: "{{ couchdb_password }}"
+    vtype: password
+
+- name: ensure couchdb is at the latest version
+  environment: "{{ apt_env }}"
+  apt: name=couchdb state=latest
