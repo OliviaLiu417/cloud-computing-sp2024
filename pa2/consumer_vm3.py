@@ -18,9 +18,19 @@ import json
 import couchdb
 
 couch = couchdb.Server("http://admin:cloudgroup10@localhost:5984/")
-db = couch['weather_data']
-# We can make this more sophisticated/elegant but for now it is just
-# hardcoded to the setup I have on my local VMs
+db = None
+retry = 5
+while not db and retry: 
+    try:
+        db = couch['weather_data']
+    except: 
+        #trying to connect to 'weather_data' table without it existing throws an error, 
+        #so we handle error by creating the table. 
+        #We only attempt to create the table when accessing a non-existing table throws an error 
+        #because if the table already exists then the create operation would throw an error, 
+        #so we can't just put create() line above access without a try catch block
+        db = couch.create('weather_data')
+        retry += 1
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)

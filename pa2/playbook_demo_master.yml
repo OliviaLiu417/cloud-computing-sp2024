@@ -14,10 +14,10 @@
     - include_tasks: tasks/playbook_install_setup_kafka.yml
 
 # # #####################################################
-# # ### Play 2:  Start Kafka services
+# # ### Play 2:  Start Kafka services for VM 2
 # # #####################################################
-- name: "Play 2: Start Kafka services"
-  hosts: MyAWSVMs,Zookeeper,VM2
+- name: "Play 2: Start Kafka services for VM2"
+  hosts: Zookeeper,VM2
   become: yes
   remote_user: ubuntu
   gather_facts: no
@@ -27,10 +27,23 @@
   tasks:
     - include_tasks: tasks/playbook_start_kafka.yml
 
-# #####################################################
-# # ### Play 3: Copying consumers to vm
 # # #####################################################
-- name: "Play 3: Copying consumers to vm"
+# # ### Play 3:  Start Kafka services for VM3
+# # #####################################################
+- name: "Play 3: Start Kafka services for VM3"
+  hosts: VM3
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  vars:
+    installation_dir: /opt/kafka_2.13-3.6.1
+    private_ip: "{{ hostvars[inventory_hostname]['private_ip'] }}"
+  tasks:
+    - include_tasks: tasks/playbook_start_kafka.yml
+#####################################################
+# ### Play 4: Copying consumers to vm
+# #####################################################
+- name: "Play 4: Copying consumers to vm"
   hosts: Zookeeper,VM3
   vars:
     consumer_dir: /home/ubuntu
@@ -41,9 +54,25 @@
     - include_tasks: tasks/playbook_copy_consumers.yml
 
 # #####################################################
-# ### Play 4: Running all consumers
+# ### Play 5: install DB
 # #####################################################
-- name: "Play 4: Run the consumer"
+- name: "Play 5: install database"
+  hosts: VM3
+  vars:
+    consumer_dir: /home/ubuntu
+    apt_env:
+      DEBIAN_FRONTEND: noninteractive
+    couchdb_password: cloudgroup10
+  remote_user: ubuntu
+  gather_facts: no
+  become: yes
+  tasks:
+    - include_tasks: tasks/playbook_install_couchdb.yml
+
+#####################################################
+### Play 6: Running all consumers
+#####################################################
+- name: "Play 6: Run the consumer"
   hosts: Zookeeper,VM3
   vars:
     consumer_dir: /home/ubuntu
@@ -53,18 +82,5 @@
   tasks:
     - include_tasks: tasks/playbook_run_consumers.yml
 
-# # #####################################################
-# # ### Play 5: install DB
-# # #####################################################
-- name: "Play 5: install database"
-  hosts: VM3
-  vars:
-    consumer_dir: /home/ubuntu
-    apt_env:
-      DEBIAN_FRONTEND: noninteractive
-    couchdb_password: cloudgroup18
-  remote_user: ubuntu
-  gather_facts: no
-  become: yes
-  tasks:
-    - include_tasks: tasks/playbook_install_couchdb.yml
+
+

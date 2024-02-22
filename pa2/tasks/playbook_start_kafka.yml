@@ -1,21 +1,24 @@
 ---
 # close all screens
-- name: Close all screens
-  command: killall -w screen
+# - name: Close all screens
+#   become: true
+#   shell: pkill screen
 
 - name: Start Zookeeper
+  become: true
   command: screen -dmS zookeeper bash -c 'sudo /opt/kafka_2.13-3.6.1/bin/zookeeper-server-start.sh "/opt/kafka_2.13-3.6.1/config/zookeeper.properties"; exec bash'
   when: "'Zookeeper' in group_names"
 
 - name: Start Brokers
+  become: true
   command: screen -dmS broker bash -c 'sudo /opt/kafka_2.13-3.6.1/bin/kafka-server-start.sh "/opt/kafka_2.13-3.6.1/config/server.properties"; exec bash'
   when: "'MyAWSVMs' in group_names"
 
 # create weather data topics
-- name: Create topics
-  command: /opt/kafka_2.13-3.6.1/bin/kafka-topics.sh --create --topic {{ item }} --bootstrap-server {{private_ip}}:9092 --partitions 1 --replication-factor 1
-  loop:
-    - weather_data_nashville
-    - weather_data_chicago
-    - weather_data_atlanta
-  when: "'VM2' in group_names"
+# - name: Create topics
+#   command: /opt/kafka_2.13-3.6.1/bin/kafka-topics.sh --create --topic {{ item }} --bootstrap-server {{private_ip}}:9092 --partitions 1 --replication-factor 1
+#   loop:
+#     - weather_data_nashville
+#     - weather_data_chicago
+#     - weather_data_atlanta
+#   when: "'VM2' in group_names"

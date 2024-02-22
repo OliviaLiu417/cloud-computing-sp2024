@@ -59,3 +59,10 @@
 - name: ensure couchdb is at the latest version
   environment: "{{ apt_env }}"
   apt: name=couchdb state=latest
+
+- name: Ensure couchdb is installed for the consumer
+  pip:
+    name: couchdb
+    state: present
+    executable: pip3
+  tags: install
