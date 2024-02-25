@@ -1,0 +1,14 @@
+- name: "Clean up"
+  hosts: MyAWSVMs
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - name: "Kill all screens"
+      become: true
+      command: "killall screen"
+    - name: "Remove log files"
+      become: true
+      command: "rm -rf /tmp/zookeeper rm -rf /tmp/kafka-logs"
+    - name: "Remove consumer files"
+      become: true
+      command: "rm consumer_vm2.py rm consumer_vm3.py"

@@ -35,7 +35,7 @@ def produce_weather_data(city_name):
 
         # TODO: Define city-specific Kafka topic
         # kafka_topic = f"weather_data_{city_name.lower().replace(' ', '_')}"
-        kafka_topic = f"weather_data_{city_name.lower()}"
+        kafka_topic = f"weather_{city_name.lower()}"
         
         # Send data to Kafka
         producer.send(kafka_topic, value=data)

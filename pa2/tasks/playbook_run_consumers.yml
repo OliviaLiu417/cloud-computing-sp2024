@@ -1,9 +1,14 @@
 - name: Run VM2 consumer
   become: true
-  command: screen -dmS vm2_consumer bash -c 'python3 "{{consumer_dir}}/consumer_vm2.py"; exec bash'
-  when: "'Zookeeper' in group_names"
+  command: screen -dmS vm2_consumer python3 consumer_vm2.py
+  when: "'VM2' in group_names"
+
+- name: Run VM2 consumer (repeat)
+  become: true
+  command: screen -dmS vm2_consumer01 python3 consumer_vm2.py
+  when: "'VM2' in group_names"
 
 - name: Run VM3 consumer
   become: true
-  command: screen -dmS vm3_consumer bash -c 'python3 "{{consumer_dir}}/consumer_vm3.py"; exec bash'
+  command: screen -dmS vm3_consumer python3 consumer_vm3.py
   when: "'VM3' in group_names"

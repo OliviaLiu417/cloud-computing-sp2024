@@ -1,4 +1,5 @@
 .env
 .vagrant
 .DS_Store
+*.code-workspace
 ```
