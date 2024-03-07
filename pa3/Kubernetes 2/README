@@ -1,0 +1,7 @@
+Deployment
+--------------
+In this directory, we use an nginx deployment YAML file from the Kubernetes.io
+distribution. We show a 3-replica deployment on our 2-node cluster. We then show
+how to convert it into a service.  We then delete this service and deployment.
+
+
