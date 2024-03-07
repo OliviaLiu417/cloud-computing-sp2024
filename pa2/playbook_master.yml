@@ -1,0 +1,81 @@
+# ---
+# #####################################################
+# ### Play 1: Install Kafka, dependencies, and set up the services
+# #####################################################
+# - name: "Play 1: Install Kafka, dependencies, and set up the services"
+#   hosts: MyAWSVMs,Zookeeper
+#   remote_user: ubuntu
+#   gather_facts: no
+#   vars:
+#     zookeeper_heap_size: -Xmx256M -Xms128M
+#     kafka_heap_size: -Xmx256M -Xms128M
+#     installation_dir: /opt/kafka_2.13-3.6.1
+#   tasks:
+#     - include_tasks: tasks/playbook_install_setup_kafka.yml
+
+# # # #####################################################
+# # # ### Play 2:  Start Kafka services for VM
+# # # #####################################################
+# - name: "Play 2: Start Kafka services for VMs"
+#   hosts: MyAWSVMs
+#   become: yes
+#   remote_user: ubuntu
+#   gather_facts: no
+#   vars:
+#     installation_dir: /opt/kafka_2.13-3.6.1
+#     private_ip: "{{ hostvars[inventory_hostname]['private_ip'] }}"
+#   tasks:
+#     - include_tasks: tasks/playbook_start_kafka.yml
+
+#####################################################
+# ### Play 3: Copying consumers to vm
+# #####################################################
+# - name: "Play 3: Copying consumers to vm"
+#   hosts: MyAWSVMs
+#   vars:
+#     consumer_dir: /home/ubuntu
+#   remote_user: ubuntu
+#   gather_facts: no
+#   become: yes
+#   tasks:
+#     - include_tasks: tasks/playbook_copy_consumers.yml
+
+# #####################################################
+# ### Play 4: install DB
+# #####################################################
+# - name: "Play 4: install database"
+#   hosts: VM3
+#   vars:
+#     consumer_dir: /home/ubuntu
+#     apt_env:
+#       DEBIAN_FRONTEND: noninteractive
+#     couchdb_password: cloudgroup10
+#   remote_user: ubuntu
+#   gather_facts: no
+#   become: yes
+#   tasks:
+#     - include_tasks: tasks/playbook_install_couchdb.yml
+
+# #####################################################
+# ### Play 5: Running all consumers
+# #####################################################
+# - name: "Play 5: Run the consumer"
+#   hosts: MyAWSVMs
+#   vars:
+#     consumer_dir: /home/ubuntu
+#   remote_user: ubuntu
+#   gather_facts: no
+#   become: yes
+#   tasks:
+#     - include_tasks: tasks/playbook_run_consumers.yml
+
+# #####################################################
+# ### Play 1: Install Kafka, dependencies, and set up the services
+# #####################################################
+- name: "Play 1: Install docker, kubernetes, and set up the services"
+  hosts: MyAWSVMs
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - include_tasks: tasks/playbook_install_docker_kubernetes.yml

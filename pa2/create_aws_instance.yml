@@ -2,24 +2,18 @@
 - name: Create a new Demo EC2 instance
   hosts: localhost
   gather_facts: False
-  # environment:
-  #   AWS_ACCESS_KEY_ID: <your_access_key>
-  #   AWS_SECRET_ACCESS_KEY: <your_secret_key>
-  #   AWS_REGION: 'us-west-2'
 
   vars:
-    instance_type: t2.micro
     ami: ami-008fe2fc65df48dac # Ubuntu 20.04 LTS
     keypair: cloud # pem file name
     subnetid: subnet-Oec8b1da6f937f163
     vpc_id: vpc-07dbc78a6df7fa34a
 
   tasks:
-    - name: Create cloud vm2 ec2 instance
+    - name: Create cloud vm1 ec2 instance
       ec2_instance:
-        name: group10-vm2
-        # key_name: "{{ keypair }}"
-        instance_type: "{{ instance_type }}"
+        name: gropu10-pa3-vm1
+        instance_type: t2.medium
         image_id: "{{ ami }}"
         count: 1
         wait: yes
@@ -28,7 +22,25 @@
           subnet_id: "{{ subnetid }}"
           assign_public_ip: yes
         tags:
-          Name: group10-vm2
+          Name: gropu10-pa3-vm1
+          assign_public_ip: yes
+        key_name: "{{ keypair }}"
+        security_group: launch-wizard-17
+      register: ec2
+
+    - name: Create cloud vm2 ec2 instance
+      ec2_instance:
+        name: gropu10-pa3-vm2
+        instance_type: t2.medium
+        image_id: "{{ ami }}"
+        count: 1
+        wait: yes
+        network:
+          vpc_id: "{{ vpc_id }}"
+          subnet_id: "{{ subnetid }}"
+          assign_public_ip: yes
+        tags:
+          Name: gropu10-pa3-vm2
           assign_public_ip: yes
         key_name: "{{ keypair }}"
         security_group: launch-wizard-17
@@ -36,8 +48,8 @@
 
     - name: Create cloud vm3 ec2 instance
       ec2_instance:
-        name: group10-vm3
-        instance_type: "{{ instance_type }}"
+        name: gropu10-pa3-vm3
+        instance_type: t2.medium
         image_id: "{{ ami }}"
         count: 1
         wait: yes
@@ -46,7 +58,7 @@
           subnet_id: "{{ subnetid }}"
           assign_public_ip: yes
         tags:
-          Name: group10-vm3
+          Name: gropu10-pa3-vm3
           assign_public_ip: yes
         key_name: "{{ keypair }}"
         security_group: launch-wizard-17
