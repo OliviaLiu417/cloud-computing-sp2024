@@ -1,0 +1,42 @@
+# #####################################################
+# ### Install Kafka, dependencies, and set up the services
+# #####################################################
+# - name: "Play 1: Install docker, kubernetes, and set up the services"
+#   hosts: MyAWSVMs
+#   become: yes
+#   remote_user: ubuntu
+#   gather_facts: no
+#   tasks:
+#     - include_tasks: tasks/playbook_install_docker_kubernetes.yml
+# #####################################################
+# ### Create the kubernetes cluster
+# #####################################################
+# - name: Reset kubeadmin
+#   hosts: MyAWSVMs
+#   become: yes
+#   remote_user: ubuntu
+#   gather_facts: no
+#   tasks:
+#     - include_tasks: tasks/playbook_reset_kubeadmin.yml
+
+- name: Initialize the Kubernetes Master
+  hosts: Master
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - include_tasks: tasks/playbook_init_master.yml
+
+- name: Join Kubernetes worker nodes
+  hosts: Workers
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - name: Copy the join command to server location
+      become: true
+      copy: src=join-command dest=/tmp/join-command.sh mode=0777
+
+    - name: Join the node to cluster
+      become: true
+      command: sh /tmp/join-command.sh
+      register: join_output

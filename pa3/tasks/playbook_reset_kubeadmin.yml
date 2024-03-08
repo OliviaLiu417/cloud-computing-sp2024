@@ -1,0 +1,28 @@
+- name: "Reset kubeadmin"
+  expect:
+    command: "sudo kubeadm reset"
+    responses:
+      'Are you sure you want to proceed\? \[y/N\]:': "y"
+  ignore_errors: yes
+
+- name: "Remove kubeadmin files"
+  shell: |
+    sudo rm -r ~/.kube
+    sudo rm -r /etc/cni/net.d
+  ignore_errors: yes
+
+- name: "Restart docker"
+  service:
+    name: docker
+    state: restarted
+
+- name: "Restart containerd"
+  service:
+    name: containerd
+    state: restarted
+
+- name: "Restart kubelet"
+  service:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
