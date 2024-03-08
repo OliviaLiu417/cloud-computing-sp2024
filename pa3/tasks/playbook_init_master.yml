@@ -32,7 +32,7 @@
 
 - name: Copy Kubernetes manifest file
   copy:
-    src: ../deployment/nginx_deployment.yaml
+    src: ../k8s/nginx_deployment.yaml
     dest: /tmp/nginx_deployment.yaml
 
 - name: Apply Nginx
