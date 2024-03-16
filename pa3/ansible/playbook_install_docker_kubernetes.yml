@@ -1,0 +1,78 @@
+---
+- name: Install Docker on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt and install prerequisites
+      apt:
+        name:
+          - ca-certificates
+          - curl
+        update_cache: yes
+
+    - name: Ensure the /etc/apt/keyrings directory exists
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add Docker's official GPG key
+      ansible.builtin.shell:
+        cmd: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          chmod a+r /etc/apt/keyrings/docker.asc
+
+    - name: Add Docker repository
+      ansible.builtin.shell:
+        cmd: |
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          apt-get update
+
+    - name: Install Docker packages
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        update_cache: yes
+---
+- name: Install Kubernetes on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt and install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+        update_cache: yes
+        state: present
+
+    - name: Ensure the /etc/apt/keyrings directory exists for Kubernetes
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add Kubernetes GPG key
+      ansible.builtin.shell:
+        cmd: |
+          curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add Kubernetes repository
+      ansible.builtin.shell:
+        cmd: |
+          echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+          apt-get update
+
+    - name: Install Kubernetes packages
+      apt:
+        name:
+          - kubectl
+          - kubelet
+          - kubeadm
+        update_cache: yes
+        state: present
