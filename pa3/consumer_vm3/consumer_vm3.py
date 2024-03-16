@@ -2,7 +2,7 @@ from kafka import KafkaConsumer  # consumer of events
 import json
 import couchdb
 
-couch = couchdb.Server("http://admin:cloudgroup10@localhost:5984/")
+couch = couchdb.Server("http://admin:cloudgroup10@couchdb-service:5984/")
 db = None
 retry = 5
 while not db and retry: 
