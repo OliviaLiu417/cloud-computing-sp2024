@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer1
+  template:
+    metadata:
+      labels:
+        app: consumer1
+    spec:
+      containers:
+      - name: consumer1
+        image: dushims/consumer-vm2
+      nodeSelector:
+        worker-node: "vm2"
