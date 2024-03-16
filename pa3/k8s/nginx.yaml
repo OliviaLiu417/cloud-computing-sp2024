@@ -24,3 +24,19 @@ spec:                     # This is the specification where we can even put the 
                           # and then show how we can upgrade to newer version
         ports:            # Since nginx is a web server, we let it listen on port 80 in the container
         - containerPort: 80
+
+---
+# This is a service definition for the nginx deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80  # The port the service is exposed on inside the cluster
+      targetPort: 80  # The target port is the port on the pod that the service routes to
+      nodePort: 30007  # The port on each node's IP where this service will be exposed
+  type: NodePort  # This exposes the service on each Node's IP at a static port
