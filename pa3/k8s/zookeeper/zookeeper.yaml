@@ -18,7 +18,8 @@ spec:
         image: zookeeper:latest
         ports:
         - containerPort: 2181
-
+      nodeSelector:
+        worker-node: vm2
 ---
 
 # Zookeeper Service
