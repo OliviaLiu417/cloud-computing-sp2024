@@ -15,5 +15,3 @@ spec:
       containers:
       - name: consumer2
         image: dushims/consumer-vm3
-      nodeSelector:
-        worker-node: "vm3"
