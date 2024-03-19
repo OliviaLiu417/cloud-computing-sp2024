@@ -3,23 +3,13 @@
 
 # AWS VMs. Note the path of private key is now in the Vagrant-created VM
 [MyAWSVMs]
-34.209.245.105 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem broker_id=0 private_ip=172.31.21.79 public_ip=34.209.245.105 zookeeper=localhost:2181,172.31.21.79:2181
-34.211.231.221 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem broker_id=1 private_ip=172.31.16.156 public_ip=34.211.231.221 zookeeper=172.31.21.79:2181
-18.236.168.172 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem broker_id=1 private_ip=172.31.23.143 public_ip=18.236.168.172 zookeeper=172.31.21.79:2181
-
-[Zookeeper]
-34.211.231.221 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
-
-[Workers]
-18.236.168.172 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
-34.211.231.221 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+54.202.228.65 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem private_ip=172.31.22.206 public_ip=54.202.228.65
+54.186.115.32 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem private_ip=172.31.20.129 public_ip=54.186.115.32 zookeeper=172.31.21.79:2181
+34.211.232.105 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem private_ip=172.31.23.143 public_ip=34.211.232.105 zookeeper=172.31.21.79:2181
 
 [VM1]
-34.209.245.105 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+54.202.228.65 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem private_ip=172.31.22.206 public_ip=54.202.228.65
 
-[VM2]
-34.211.231.221 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
-
-[VM3]
-18.236.168.172 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
-
+[Workers]
+54.186.115.32 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
+34.211.232.105 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/cloud.pem
