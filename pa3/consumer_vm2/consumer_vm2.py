@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer  # consumer of events
 import json
-consumer = KafkaConsumer(bootstrap_servers="kafka:9092")
+consumer = KafkaConsumer(bootstrap_servers="kafka-service:9092")
 
 consumer.subscribe(topics=["weather_nashville", "weather_atlanta", "weather_chicago"])
 

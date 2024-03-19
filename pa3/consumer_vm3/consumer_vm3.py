@@ -2,7 +2,7 @@ from kafka import KafkaConsumer  # consumer of events
 import json
 import couchdb
 
-couch = couchdb.Server("couchdb-service:5984/")
+couch = couchdb.Server("http://admin:cloudgroup10@couchdb-service:5984")
 db = None
 retry = 5
 while not db and retry: 
@@ -18,7 +18,7 @@ while not db and retry:
         retry += 1
 
 # acquire the consumer
-consumer = KafkaConsumer(bootstrap_servers="kafka:9092")
+consumer = KafkaConsumer(bootstrap_servers="kafka-service:9092")
 
 # subscribe to topic
 consumer.subscribe(topics=["weather_nashville", "weather_atlanta", "weather_chicago"])

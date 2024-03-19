@@ -28,6 +28,6 @@ metadata:
 spec:
   ports:
   - port: 2181
-    name: client
+    targetPort: 2181
   selector:
     app: zookeeper
