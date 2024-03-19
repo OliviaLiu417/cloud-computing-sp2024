@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: couchdb
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: couchdb
