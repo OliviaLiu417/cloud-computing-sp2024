@@ -10,19 +10,3 @@
     sudo rm -r ~/.kube
     sudo rm -r /etc/cni/net.d
   ignore_errors: yes
-
-- name: "Restart docker"
-  service:
-    name: docker
-    state: restarted
-
-- name: "Restart containerd"
-  service:
-    name: containerd
-    state: restarted
-
-- name: "Restart kubelet"
-  service:
-    name: kubelet
-    daemon_reload: yes
-    state: restarted

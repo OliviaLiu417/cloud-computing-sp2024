@@ -17,27 +17,9 @@
   become: true
   shell: "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
 
-- name: Pause for 10 seconds
-  pause:
-    seconds: 10
-
 - name: Apply the Flannel CNI
   become: true
   shell: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-  ignore_errors: yes
-  register: flannel_result
-  retries: 3
-  delay: 2
-  until: flannel_result is succeeded
-
-- name: Copy Kubernetes manifest file
-  copy:
-    src: ../k8s/nginx_deployment.yaml
-    dest: /tmp/nginx_deployment.yaml
-
-- name: Apply Nginx
-  become: true
-  shell: kubectl apply -f /tmp/nginx_deployment.yaml
 
 - name: Generate join command
   become: true

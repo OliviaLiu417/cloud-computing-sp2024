@@ -1,0 +1,44 @@
+- name: Copy zookeeper manifest file
+  copy:
+    src: ../k8s/zookeeper/zookeeper.yaml
+    dest: /tmp/zookeeper.yaml
+
+- name: Apply zookeeper
+  become: true
+  shell: kubectl apply -f /tmp/zookeeper.yaml
+
+- name: Copy broker manifest file
+  copy:
+    src: ../k8s/broker/broker.yaml
+    dest: /tmp/broker.yaml
+
+- name: Apply broker
+  become: true
+  shell: kubectl apply -f /tmp/broker.yaml
+
+- name: Copy couchdb manifest file
+  copy:
+    src: ../k8s/couchDB/couchdb.yaml
+    dest: /tmp/couchdb.yaml
+
+- name: Apply couchdb
+  become: true
+  shell: kubectl apply -f /tmp/couchdb.yaml
+
+- name: Copy consumer_vm2 manifest file
+  copy:
+    src: ../k8s/consumers/consumer_vm2.yaml
+    dest: /tmp/consumer_vm2.yaml
+
+- name: Apply consumer1
+  become: true
+  shell: kubectl apply -f /tmp/consumer_vm2.yaml
+
+- name: Copy consumer_vm3 manifest file
+  copy:
+    src: ../k8s/consumers/consumer_vm3.yaml
+    dest: /tmp/consumer_vm3.yaml
+
+- name: Apply consumer2
+  become: true
+  shell: kubectl apply -f /tmp/consumer_vm3.yaml

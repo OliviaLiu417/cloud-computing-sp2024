@@ -11,16 +11,16 @@
 # #####################################################
 # ### Create the kubernetes cluster
 # #####################################################
-# - name: Reset kubeadmin
-#   hosts: MyAWSVMs
-#   become: yes
-#   remote_user: ubuntu
-#   gather_facts: no
-#   tasks:
-#     - include_tasks: tasks/playbook_reset_kubeadmin.yml
+- name: Reset kubeadmin
+  hosts: MyAWSVMs
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - include_tasks: tasks/playbook_reset_kubeadmin.yml
 
 - name: Initialize the Kubernetes Master
-  hosts: Master
+  hosts: VM1
   become: yes
   remote_user: ubuntu
   gather_facts: no
@@ -40,3 +40,10 @@
       become: true
       command: sh /tmp/join-command.sh
       register: join_output
+
+- name: Apply K8s files
+  hosts: VM1
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - include_tasks: tasks/playbook_deploy_k8s.yml
