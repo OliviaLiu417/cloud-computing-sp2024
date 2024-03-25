@@ -1,31 +1,35 @@
 - name: Run kubeadm init
   command: sudo kubeadm init --pod-network-cidr=10.244.0.0/16
-  register: init_output
 
-- name: Print init output
-  debug:
-    var: init_output.stdout
+- name: Remove existing .kube directory
+  file:
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: absent
+  ignore_errors: yes
 
 - name: Create .kube directory
-  shell: "mkdir -p $HOME/.kube"
+  file:
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: directory
 
-- name: Copy admin.conf to .kube directory
-  become: true
-  shell: "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
-
-- name: Change ownership of .kube/config
-  become: true
-  shell: "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
+- name: Copy admin.conf to user's .kube directory
+  become: yes
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    remote_src: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
 
 - name: Apply the Flannel CNI
-  become: true
   shell: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 - name: Generate join command
-  become: true
   command: kubeadm token create --print-join-command
   register: join_command
 
 - name: Copy join command to local file
-  become: true
   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+
+- name: Restrart containerd
+  shell: sudo systemctl restart containerd

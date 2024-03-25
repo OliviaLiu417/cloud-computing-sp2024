@@ -1,3 +1,12 @@
+# - name: "Set cdn configuration for kubeadmin"
+#   become: yes
+#   lineinfile:
+#     path: /var/lib/kubelet/kubeadm-flags.env
+#     insertafter: EOF
+#     line: "KUBELET_KUBEADM_ARGS=--resolv-conf=/run/systemd/resolve/resolv.conf"
+# - name: restart Kubelet
+#   become: yes
+#   shell: sudo systemctl restart kubelet
 - name: "Reset kubeadmin"
   expect:
     command: "sudo kubeadm reset"
@@ -7,6 +16,6 @@
 
 - name: "Remove kubeadmin files"
   shell: |
-    sudo rm -r ~/.kube
-    sudo rm -r /etc/cni/net.d
+    rm -fr ~/.kube
+    sudo rm -fr /etc/cni/net.d
   ignore_errors: yes

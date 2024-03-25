@@ -1,7 +1,7 @@
 # #####################################################
 # ### Install Kafka, dependencies, and set up the services
 # #####################################################
-# - name: "Play 1: Install docker, kubernetes, and set up the services"
+# - name: "Install docker, kubernetes, and set up the services"
 #   hosts: MyAWSVMs
 #   become: yes
 #   remote_user: ubuntu
@@ -15,7 +15,7 @@
   hosts: MyAWSVMs
   become: yes
   remote_user: ubuntu
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - include_tasks: tasks/playbook_reset_kubeadmin.yml
 
@@ -23,7 +23,7 @@
   hosts: VM1
   become: yes
   remote_user: ubuntu
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - include_tasks: tasks/playbook_init_master.yml
 
@@ -35,11 +35,25 @@
     - name: Copy the join command to server location
       become: true
       copy: src=join-command dest=/tmp/join-command.sh mode=0777
-
     - name: Join the node to cluster
       become: true
       command: sh /tmp/join-command.sh
       register: join_output
+    - name: Restrart containerd
+      shell: sudo systemctl restart containerd
+
+- name: Sync cni0 and flannel
+  hosts: MyAWSVMs
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - name: "Sync cni0 and flannel.1 interfaces"
+      become: true
+      shell: |
+        ip link set cni0 down && ip link set flannel.1 down
+        ip link delete cni0 && ip link delete flannel.1
+        systemctl restart containerd && systemctl restart kubelet
+      ignore_errors: yes
 
 - name: Apply K8s files
   hosts: VM1
