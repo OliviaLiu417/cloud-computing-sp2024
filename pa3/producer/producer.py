@@ -10,7 +10,7 @@ API_KEY = "1efe32238e1a430cbbcc25f4c45b9b9e"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 # Kafka configuration
-BOOTSTRAP_SERVERS = "35.85.145.90:9092" # vm1
+BOOTSTRAP_SERVERS = "54.202.228.65:30092" # vm1
 
 # Initialize Kafka producer
 producer = KafkaProducer(
@@ -35,7 +35,7 @@ def produce_weather_data(city_name):
 
         # TODO: Define city-specific Kafka topic
         # kafka_topic = f"weather_data_{city_name.lower().replace(' ', '_')}"
-        kafka_topic = f"weather_{city_name.lower()}"
+        kafka_topic = f"weather_{city_name.lower()}_topic"
         
         # Send data to Kafka
         producer.send(kafka_topic, value=data)

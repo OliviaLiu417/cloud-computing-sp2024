@@ -1,6 +1,10 @@
+print("Logging test run")
+
 from kafka import KafkaConsumer  # consumer of events
 import json
 import couchdb
+
+print("Beginning couchdb")
 
 couch = couchdb.Server("http://admin:cloudgroup10@couchdb-service:5984")
 db = None
@@ -17,11 +21,15 @@ while not db and retry:
         db = couch.create('weather_data')
         retry += 1
 
+print("Acquaring the consumer and subscribing to topics")
+
 # acquire the consumer
-consumer = KafkaConsumer(bootstrap_servers="kafka-service:9092")
+consumer = KafkaConsumer(bootstrap_servers="54.202.228.65:30092")
 
 # subscribe to topic
-consumer.subscribe(topics=["weather_nashville", "weather_atlanta", "weather_chicago"])
+consumer.subscribe(topics=["weather_nashville_topic", "weather_atlanta_topic", "weather_chicago_topic"])
+
+print("Receving messages:")
 
 for msg in consumer:
     value = msg.value.decode('utf-8')

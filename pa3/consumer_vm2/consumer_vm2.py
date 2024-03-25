@@ -1,8 +1,8 @@
 from kafka import KafkaConsumer  # consumer of events
 import json
-consumer = KafkaConsumer(bootstrap_servers="kafka-service:9092")
+consumer = KafkaConsumer(bootstrap_servers="54.202.228.65:30092")
 
-consumer.subscribe(topics=["weather_nashville", "weather_atlanta", "weather_chicago"])
+consumer.subscribe(topics=["weather_nashville_topic", "weather_atlanta_topic", "weather_chicago_topic"])
 
 for msg in consumer:
     value = msg.value.decode('utf-8')
